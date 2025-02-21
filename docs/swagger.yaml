@@ -1,0 +1,230 @@
+openapi: 3.0.0
+info:
+    title: Titre API
+    version: 1.0.0
+    contact:
+        name: Nom du projet
+        url: Lien du projet
+# Parametrage de sous dossier
+tags:
+    - name: auth
+      description: Opérations liées à la connexion
+    - name: user
+      description: Opérations liées aux utilisateurs
+
+paths:
+  /register:
+    post:
+      tags:
+        - auth
+      summary: Inscription d'un utilisateur
+      description: Valide et crée un nouvel utilisateur.
+      requestBody:
+        description: Objet contenant les informations d'inscription.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "john_doe"
+                email:
+                  type: string
+                  format: email
+                  example: "john@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "motdepasse123"
+              required:
+                - username
+                - email
+                - password
+      responses:
+        '200':
+          description: Inscription réussie
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {}
+        '400':
+          description: Erreur de validation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Erreur:
+                    type: string
+                    example: "Champ email manquant"
+        '500':
+          description: Erreur serveur
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur serveur."
+                  error:
+                    type: string
+                    example: "Détail de l'erreur"
+
+  /signin:
+    post:
+      tags:
+        - auth
+      summary: Connexion d'un utilisateur
+      description: Authentifie un utilisateur et retourne un token ou des informations de session.
+      requestBody:
+        description: Objet contenant les informations de connexion.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "john@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "motdepasse123"
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Connexion réussie
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      username:
+                        type: string
+                        example: "john_doe"
+        '400':
+          description: Erreur de validation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Erreur:
+                    type: string
+                    example: "Mot de passe requis"
+        '500':
+          description: Erreur serveur
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur serveur."
+
+  /user:
+    post:
+      tags:
+        - user
+      summary: Ajout d'un utilisateur
+      description: Ajoute un nouvel utilisateur après validation (authentification et rôle requis).
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Objet contenant les informations de l'utilisateur à ajouter.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "nouvel_utilisateur"
+                email:
+                  type: string
+                  format: email
+                  example: "nouveau@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "motdepasse123"
+                # Ajoute ici d'autres champs spécifiques à ton utilisateur
+              required:
+                - username
+                - email
+                - password
+      responses:
+        '200':
+          description: Utilisateur ajouté avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {}
+        '400':
+          description: Erreur de validation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Erreur:
+                    type: string
+                    example: "Données invalides"
+        '500':
+          description: Erreur serveur
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur serveur."
+                  erreur:
+                    type: string
+                    example: "Détail de l'erreur"
+
+    get:
+      tags:
+        - user
+      summary: Récupération de tous les utilisateurs
+      description: Retourne la liste de tous les utilisateurs (authentification et rôle requis).
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste des utilisateurs récupérée avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integ
+
+

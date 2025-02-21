@@ -1,0 +1,26 @@
+{
+    "db": {
+        "name": "name",
+        "user": "root",
+        "password": "root",
+        "host": "container-host",
+        "port": 3306,
+        "dialect": "mysql"
+    },
+    "server": {
+        "env": "Prod",
+        "port": 6633
+    },
+    "cors": {
+        "origin": ["https://site-prod.org"],
+        "method": ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
+        "allowedHeaders": ["Content-Type", "Authorization", "role"],
+        "maxAge": 3000
+    },
+    "storage": {
+        "nombreImageBanque": 29
+    },
+    "redis": {
+        "expiration": 84600
+    }
+}
