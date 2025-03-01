@@ -7,7 +7,7 @@ interface passObj {
 }
 
 class UserValidator {
-    async data(userData: userCreationAttributes) {
+    async data(userData: Partial<userCreationAttributes>) {
         if (userData.username) {
             const username = await this.#findUsername(userData.username);
             if (username) {

@@ -1,12 +1,9 @@
 //Model & bdd
 import { User, userCreationAttributes } from "../models/user";
-import { Op } from "sequelize";
 
 //Tools
 import Crypt from "../tools/hash";
 import UUID from "../tools/uuid";
-import fs from "fs";
-import path from "path";
 import config from "config";
 import Redis, { KEYS } from "../tools/redis";
 
@@ -19,10 +16,7 @@ interface passObj {
 class UserController {
     async add(userData: userCreationAttributes) {
         userData.id = UUID.v7();
-        userData.image =
-            "bank-img-" + Math.trunc(Math.random() * image) + ".png";
         userData.password = "password1";
-        userData.isActive = true;
         await User.create(userData);
         userData.password = await Crypt.hash(userData.password);
         await User.update(userData, {

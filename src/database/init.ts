@@ -1,6 +1,6 @@
-//tools
+// tools
 import Crypt from "../tools/hash";
-//Db & Model
+// Db & Model
 import db from "./db";
 import { User } from "../models/user";
 import config from "config";
@@ -9,27 +9,22 @@ import Redis, { KEYS } from "../tools/redis";
 const image: number = config.get("storage.nombreImageBanque");
 const env = config.get("server.env");
 
-//Data
+// Data
 const dataUser = require("./data/user");
-const dataModule = require("./data/module");
 
-let lastUUID: string;
-if (env == "Dev") {
-    db.abend
-        .sync({ force: true })
-        .then(async (_) => {
-            pushDb_dev();
-        })
-        .catch((err) => {
-            console.log("Erreur de synchronisation :", err);
-        });
-} else {
-    db.abend
-        .sync({ alter: true })
-        .then(async (_) => {})
-        .catch((err) => {
-            console.log("Erreur de synchronisation :", err);
-        });
+// Fonction d'initialisation exportée
+export async function initializeDatabase(force: boolean = false) {
+    try {
+        if (env === "Dev" || env === "Test") {
+            await db.abend!.sync({ force });
+            await pushDb_dev();
+        } else {
+            await db.abend!.sync({ alter: true });
+        }
+    } catch (err) {
+        console.log("Erreur de synchronisation :", err);
+        throw err; // Relance l'erreur pour les tests
+    }
 }
 
 async function pushDb_dev() {
@@ -43,6 +38,7 @@ async function pushDb_dev() {
         console.log("Synchronisation terminée !");
     } catch (err) {
         console.error("Erreur :", err);
+        throw err;
     }
 }
 

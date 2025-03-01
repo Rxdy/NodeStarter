@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from "sequelize";
+import { DataTypes, Model, Optional, Sequelize } from "sequelize";
 import db from "../database/db";
 
 interface UserAttributes {
@@ -18,8 +18,8 @@ class User
     public username!: string;
     public mail!: string;
     public password!: string;
-}
 
+public static initialize(sequelize: Sequelize){
 User.init(
     {
         id: {
@@ -85,10 +85,14 @@ User.init(
         },
     },
     {
-        sequelize: db.abend,
+        sequelize,
         modelName: "User",
         tableName: "Users",
     }
 );
-
+}
+public static setupAssociations() {
+    // Pas d'associations pour ce modèle
+}
+}
 export { User, userCreationAttributes };

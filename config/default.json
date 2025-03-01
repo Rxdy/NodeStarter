@@ -17,9 +17,6 @@
         "allowedHeaders": ["Content-Type", "Authorization", "role"],
         "maxAge": 3000
     },
-    "storage": {
-        "nombreImageBanque": 29
-    },
     "redis": {
         "expiration": 1
     }
